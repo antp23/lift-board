@@ -88,7 +88,7 @@ details .grid{margin-top:12px}
 <label>Note (optional) <input id="pnote" placeholder="knee 2/10, felt easy…" autocomplete="off"></label>
 <div class="btns"><button type="button" id="pc">Cancel</button><button class="go" type="submit">Log it!</button></div></form></div>
 <script>
-const SCRIPT_URL='';// set to the Lift Board Apps Script /exec URL
+const SCRIPT_URL='https://script.google.com/macros/s/AKfycbxxysr2k0geKKCXlexgu6CMrsQMwsFRimsVqZZ7fwYB7Y8-MX16PZjXt0YAgqSHfWaX7Q/exec';// set to the Lift Board Apps Script /exec URL
 const PROTO=[["Push-up plus","2 × 10, 3 s hold"],["Side-lying external rotation","2 × 12/side, 5 s up/5 s down"],["Cable external rotation (elbow at side)","2 × 12/side"],["Cable face pull","2 × 15"],["Y-raise","2 × 12"],["Bird-dog / quadruped reach","1 × 8/side, 5 s hold"]];
 // Block 1 (weeks 1-4) prescriptions from the Indigo plan. [name, sets, reps, cue]
 const DAYS={A:{name:"Upper · press",warm:"5 min bike or rower, then the shoulder protocol",ex:[
@@ -135,7 +135,7 @@ document.getElementById('pad').onsubmit=e=>{e.preventDefault();save()};document.
 document.getElementById('sheet').onclick=e=>{if(e.target.id=='sheet')close_()};
 document.addEventListener('click',e=>{if(e.target.closest('a.how'))return;const b=e.target.closest('.picker button');if(b){localStorage.setItem(DK(),b.dataset.day);render();return}const el=e.target.closest('.card[data-i]');if(el)open_(+el.dataset.i)});
 async function flush(){for(const r of [...pending]){try{const j=await api({action:'log',...r});r.row=j.row;rows.push(r);pending=pending.filter(x=>x!==r)}catch(x){break}}localStorage.setItem(QK,JSON.stringify(pending))}
-function take(j){rows=(j.rows||[]).map(r=>({...r,status:r.status||''}));if(j.hours!=null)hours=Math.round(j.hours*10)/10;upd=j.updated||''}
+function take(j){rows=(j.rows||[]).map(r=>({...r,status:r.status||''}));if(Number(j.hours)>0)hours=Math.round(j.hours*10)/10;upd=j.updated||''}
 let gotLive=false;
 fetch('data.json?'+Date.now()).then(r=>r.json()).then(j=>{if(gotLive)return;take(j);render()}).catch(()=>render());
 function live(){if(!SCRIPT_URL)return Promise.reject();return fetch(SCRIPT_URL+'?t='+Date.now()).then(r=>r.json()).then(async j=>{if(!j.rows)throw 0;gotLive=LIVE=true;take(j);upd+=' (live)';await flush();render()})}
