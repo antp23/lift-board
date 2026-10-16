@@ -1,0 +1,133 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f4f1ea"><meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Lift">
+<title>Anthony's Lift Board</title>
+<link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Permanent+Marker&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#111;--paper:#f4f1ea;--grey:#555;--lt:#d9d5cc}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.4 'Space Grotesk',system-ui,sans-serif;padding:env(safe-area-inset-top) 16px 60px;min-height:100vh;
+background-image:radial-gradient(#0000000d 1px,transparent 1.2px),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.07'/%3E%3C/svg%3E");background-size:6px 6px,160px}
+.banner{margin:12px 0 0;font-size:13px;border:2px dashed var(--ink);padding:8px 10px;border-radius:10px;background:#fff}
+header{position:relative;margin:22px 0 10px;text-align:center}
+h1{font:400 64px/0.9 'Bangers',cursive;letter-spacing:2px;margin:0;color:#fff;-webkit-text-stroke:2.5px var(--ink);text-shadow:4px 4px 0 var(--ink);transform:rotate(-3deg)}
+h1 small{display:block;font:20px 'Permanent Marker';-webkit-text-stroke:0;color:var(--ink);text-shadow:none;letter-spacing:0;transform:rotate(2deg);margin-bottom:6px}
+.burst-bg{position:absolute;inset:-10px 10% auto;height:140px;z-index:-1;background:radial-gradient(circle,#0003 1.6px,transparent 2px) 0 0/9px 9px;clip-path:polygon(50% 0,61% 22%,85% 8%,78% 34%,100% 42%,78% 56%,92% 82%,64% 72%,50% 100%,38% 74%,10% 86%,22% 58%,0 44%,22% 34%,14% 8%,40% 22%)}
+.meter{margin:20px auto 6px;max-width:420px;background:#fff;border:3px solid var(--ink);border-radius:14px;box-shadow:5px 5px 0 var(--ink);padding:12px 14px;transform:rotate(.6deg)}
+.meter .row{display:flex;justify-content:space-between;align-items:baseline;font-family:'Permanent Marker'}
+.meter .lvl{font:28px 'Bangers';letter-spacing:1px}
+.track{height:22px;border:3px solid var(--ink);border-radius:20px;margin-top:8px;overflow:hidden;background:#fff}
+.fill{height:100%;background:repeating-linear-gradient(-45deg,var(--ink) 0 6px,#fff 6px 11px);border-right:3px solid var(--ink);transition:width .6s cubic-bezier(.3,1.6,.5,1);width:0}
+.sub{font-size:14px;color:var(--grey);margin-top:6px}
+h2{display:flex;align-items:center;gap:10px;margin:34px 0 14px;font:400 30px 'Bangers';letter-spacing:1.5px}
+h2 .tag{background:var(--ink);color:#fff;padding:2px 12px 0;transform:rotate(-2deg);box-shadow:3px 3px 0 #0005}
+h2 .cnt{font:16px 'Permanent Marker';margin-left:auto}
+h2::after{content:"";flex:0 0 0}
+.divider{height:10px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='10'%3E%3Cpath d='M0 5 Q10 0 20 5 T40 5' fill='none' stroke='%23111' stroke-width='2.5'/%3E%3C/svg%3E") repeat-x;margin-top:-8px;opacity:.8}
+.grid{display:grid;gap:16px}
+.card{position:relative;display:flex;gap:12px;align-items:flex-start;background:#fff;border:3px solid var(--ink);border-radius:12px;padding:14px 14px 14px 12px;box-shadow:6px 6px 0 var(--ink);cursor:pointer;transition:transform .15s,box-shadow .15s;user-select:none}
+.card:nth-child(3n+1){transform:rotate(-1.2deg)}.card:nth-child(3n+2){transform:rotate(.9deg)}.card:nth-child(3n){transform:rotate(-.4deg)}
+.card:active{transform:translate(4px,4px) rotate(0);box-shadow:2px 2px 0 var(--ink)}
+.card::before{content:"";position:absolute;top:-11px;left:50%;width:60px;height:20px;margin-left:-30px;background:#0000001f;border:1px solid #0002;transform:rotate(-3deg)}
+.ico{flex:0 0 46px;height:46px;border:2.5px solid var(--ink);border-radius:50%;display:grid;place-items:center;background:radial-gradient(#0002 1.2px,transparent 1.5px) 0 0/5px 5px}
+.ico svg{width:28px;height:28px;fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.t{font-weight:700;font-size:17px}.n{font-size:14px;color:var(--grey);margin-top:3px}
+.meta{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.chip{font-size:12px;font-weight:600;border:2px solid var(--ink);border-radius:20px;padding:1px 8px;text-transform:uppercase;letter-spacing:.5px}
+.chip.xp{background:var(--ink);color:#fff}
+.stamp{position:absolute;right:10px;top:50%;font:400 34px 'Bangers';letter-spacing:2px;color:var(--ink);border:4px double var(--ink);padding:0 10px;border-radius:8px;transform:translateY(-50%) rotate(-14deg) scale(0);opacity:0;pointer-events:none;mix-blend-mode:multiply;background:#ffffffaa}
+.card.done{background:#ebe7de}.card.done .t{text-decoration:line-through 2.5px}.card.done .t,.card.done .n{color:#444}
+.card.done .stamp{opacity:.9;transform:translateY(-50%) rotate(-14deg) scale(1)}
+.card.stamping .stamp{animation:stamp .5s cubic-bezier(.2,1.8,.4,1) forwards}.card.stamping{animation:wob .45s}
+@keyframes stamp{0%{opacity:0;transform:translateY(-50%) rotate(-30deg) scale(2.6)}60%{opacity:1;transform:translateY(-50%) rotate(-10deg) scale(.9)}100%{opacity:.9;transform:translateY(-50%) rotate(-14deg) scale(1)}}
+@keyframes wob{25%{transform:rotate(2.5deg) scale(1.03)}50%{transform:rotate(-2deg)}75%{transform:rotate(1deg)}}
+details{margin-top:14px}summary{font:18px 'Permanent Marker';cursor:pointer;list-style:none;padding:6px 0}summary::before{content:"✎ "}
+details .grid{margin-top:12px}
+.cats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cat{background:#fff;border:2.5px solid var(--ink);border-radius:10px;padding:10px;box-shadow:4px 4px 0 var(--ink);font-weight:600;font-size:14px}
+.cat .ico{flex:none;width:34px;height:34px;margin-bottom:6px}.cat .ico svg{width:20px;height:20px}
+.mini{height:10px;border:2px solid var(--ink);border-radius:8px;margin-top:6px;overflow:hidden}.mini i{display:block;height:100%;background:var(--ink)}
+.splat{position:fixed;pointer-events:none;background:var(--ink);z-index:9}
+.toast{position:fixed;left:50%;bottom:34px;transform:translate(-50%,140%) rotate(-3deg);background:#fff;border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);font:26px 'Bangers';letter-spacing:1.5px;padding:8px 18px;border-radius:30px 26px 32px 22px;transition:transform .35s cubic-bezier(.3,1.6,.5,1);z-index:10}
+.toast.s{transform:translate(-50%,0) rotate(-3deg)}
+.toast button{font:20px 'Bangers';letter-spacing:1px;margin-left:12px;background:var(--ink);color:#fff;border:2px solid var(--ink);border-radius:16px 12px 18px 10px;padding:3px 12px;cursor:pointer}
+.recent{border:3px dashed var(--ink);border-radius:14px;padding:10px;margin-top:6px}.recent .hint{font-size:14px;margin:0 0 8px;font-style:italic}
+.foot{text-align:center;font:15px 'Permanent Marker';margin-top:36px;color:var(--grey)}
+@media(min-width:700px){body{max-width:720px;margin:auto}.grid{grid-template-columns:1fr 1fr}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.num{flex:0 0 46px;height:46px;border:2.5px solid var(--ink);border-radius:50%;display:grid;place-items:center;font:24px 'Bangers';background:radial-gradient(#0002 1.2px,transparent 1.5px) 0 0/5px 5px}
+.last{font-size:13px;margin-top:6px;font-family:'Permanent Marker'}
+.proto .card{cursor:default;padding:10px 12px}.proto .card::before{display:none}
+.road{margin:40px auto 0;max-width:460px;background:#fff;border:3px solid var(--ink);border-radius:14px;box-shadow:5px 5px 0 var(--ink);padding:12px 14px;transform:rotate(-.6deg)}
+.road .track{position:relative;overflow:visible}.road .pin{position:absolute;top:-24px;font:13px 'Permanent Marker';transform:translateX(-50%);white-space:nowrap}
+.road .pin::after{content:"";position:absolute;left:50%;top:18px;height:32px;border-left:2.5px dashed var(--ink)}
+.sheet{position:fixed;inset:0;background:#0006;display:none;align-items:flex-end;z-index:20}.sheet.s{display:flex}
+.pad{background:var(--paper);width:100%;max-width:520px;margin:auto auto 0;border:3px solid var(--ink);border-bottom:0;border-radius:18px 18px 0 0;padding:18px 18px calc(24px + env(safe-area-inset-bottom))}
+.pad h3{font:400 30px 'Bangers';letter-spacing:1px;margin:0 0 4px}.pad label{display:block;font:16px 'Permanent Marker';margin-top:12px}
+.pad input{width:100%;font:22px 'Space Grotesk';padding:10px;border:3px solid var(--ink);border-radius:10px;background:#fff;margin-top:4px}
+.pad .btns{display:flex;gap:10px;margin-top:16px}.pad button{flex:1;font:24px 'Bangers';letter-spacing:1px;padding:10px;border:3px solid var(--ink);border-radius:12px;background:#fff;box-shadow:3px 3px 0 var(--ink)}
+.pad button.go{background:var(--ink);color:#fff}
+.card.done .stamp{opacity:.9;transform:translateY(-50%) rotate(-14deg) scale(1)}
+</style></head><body>
+<header><div class="burst-bg"></div><h1><small>Anthony's</small>LIFT BOARD!</h1>
+<div class="meter" id="meter"><div class="row"><span class="lvl" id="lvl">DAY A</span><span id="sum"></span></div><div class="track"><div class="fill" id="fill"></div></div><div class="sub" id="streak"></div></div></header>
+<main id="app"></main><div class="toast" id="toast" role="status"></div>
+<div class="sheet" id="sheet"><form class="pad" id="pad"><h3 id="pt"></h3><div class="n" id="pn"></div>
+<label>Weight you used <input id="pw" inputmode="decimal" placeholder="e.g. 35 lb DBs" autocomplete="off" required></label>
+<label>Reps (optional) <input id="pr" placeholder="e.g. 12,11,10" autocomplete="off"></label>
+<label>Note (optional) <input id="pnote" placeholder="knee 2/10, felt easy…" autocomplete="off"></label>
+<div class="btns"><button type="button" id="pc">Cancel</button><button class="go" type="submit">Log it!</button></div></form></div>
+<script>
+const SCRIPT_URL='';// set to the Lift Board Apps Script /exec URL
+const PROTO=[["Push-up plus","2 × 10, 3 s hold"],["Side-lying external rotation","2 × 12/side, 5 s up/5 s down"],["Cable external rotation (elbow at side)","2 × 12/side"],["Cable face pull","2 × 15"],["Y-raise","2 × 12"],["Bird-dog / quadruped reach","1 × 8/side, 5 s hold"]];
+// Block 1 (weeks 1-4) prescriptions from the Indigo plan. [name, sets, reps, cue]
+const DAYS={A:{name:"Upper · press",warm:"5 min bike or rower, then the shoulder protocol",ex:[
+["Dumbbell bench or floor press",3,"10–12","Elbows ~45°. Alternate sets with the row."],["Cable low row",3,"10–12","Neutral grip, 1 s squeeze."],["Half-kneeling bottoms-up KB press",3,"6–8/side","Light bell, crushed grip."],["Single-arm DB row",3,"10/side","Elbow to hip. Heavy is fine."],["Push-up variation",3,"AMRAP −2","Stop 2 short of failure."],["Cable external rotation @ 90°",2,"12/side","Light load."],["Triceps press-down",2,"12–15","Elbows still."],["Pallof press",3,"10/side","Resist the rotation."]]},
+B:{name:"Lower · left knee",warm:"5 min bike, terminal knee ext 2×15 L / 1×15 R, light single-leg extension 15/side",knee:true,ex:[
+["Assisted squat machine / goblet squat",3,"10","Even feet, 1 s pause."],["DB reverse lunge","L4 / R3","8","Left first, extra left set."],["Single-leg leg extension","L3 / R2","12","Same load both sides. Stop >3/10."],["KB single-leg RDL",3,"8/side","Slow, tap the floor."],["Leg curl",2,"12",""],["Single-leg calf raise",2,"15/side","Pause at top."],["Dead bug",3,"8/side","Back glued down."],["Suitcase carry",3,"30 s/side","Walk tall."],["Med ball rotational slam",2,"8/side","Light. Hips drive."],["Optional: rower easy","1","10 min","Conversational."]]},
+C:{name:"Upper · pull",warm:"5 min bike or rower, then the shoulder protocol",ex:[
+["Lat pulldown",4,"10–12","No leaning. Towel grip every other week."],["DB bench or floor press (secondary)",3,"10","Lighter than Day A."],["Single-arm cable low row",3,"10/side","Full protraction, hard squeeze."],["Renegade row",3,"6/side","Hips stay square."],["Rear delt fly",3,"15","Light."],["DB hammer curl",2,"12",""],["KB farmer carry",3,"40 s","Set down before grip opens."],["Hollow hold",3,"20 s","Ribs down."]]},
+D:{name:"Power + rower",warm:"5 min easy row, 10 KB deadlifts, 10 goblet squats, 5 slow get-up sit-ups/side",ex:[
+["KB two-hand swing",5,"10","Moderate bell. Stop when the float goes."],["Turkish get-up",3,"2/side","Light. Never grind."],["Med ball chest pass",3,"6","Speed over weight."],["Rower",1,"20 min","Steady, conversational."]]}};
+const ORDER="ABCD";const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const tday=()=>new Date().toLocaleDateString('en-CA');const QK='lift-pending-v1';
+let rows=[],hours=2.5,LIVE=false,upd='',undoT,cur=null;let pending=JSON.parse(localStorage.getItem(QK)||'[]');
+const logged=()=>rows.concat(pending).filter(r=>/logged/i.test(r.status));
+function nextDay(){const L=logged().filter(r=>ORDER.includes(r.session));if(!L.length)return'A';const last=L[L.length-1];
+ const td=L.filter(r=>r.date==tday());if(td.length)return td[td.length-1].session;// keep today's session while you're mid-workout
+ return ORDER[(ORDER.indexOf(last.session)+1)%4]}
+function lastTime(ex){const L=logged().filter(r=>r.exercise==ex&&r.date!=tday());if(!L.length)return'';const r=L[L.length-1];return `Last time (${r.date}): ${esc(r.weight)}${r.reps?' × '+esc(r.reps):''}`}
+function doneToday(ex,s){return logged().some(r=>r.exercise==ex&&r.session==s&&r.date==tday())}
+function render(){const d=nextDay(),D=DAYS[d];const n=D.ex.filter(e=>doneToday(e[0],d)).length;
+ document.getElementById('lvl').textContent='DAY '+d;document.getElementById('sum').textContent=`${n}/${D.ex.length} logged`;
+ document.getElementById('fill').style.width=n/D.ex.length*100+'%';document.getElementById('streak').textContent=D.name+(n==D.ex.length?' · Done. Oss.':'');
+ let h='';if(d=='A'||d=='C')h+=`<section class="proto"><h2><span class="tag">⚠ Shoulders first</span><span class="cnt">10 min</span></h2><div class="divider"></div><div class="grid">${PROTO.map(p=>`<div class="card"><div><div class="t">${esc(p[0])}</div><div class="n">${esc(p[1])}</div></div></div>`).join('')}</div></section>`;
+ h+=`<section><h2><span class="tag">✸ Day ${d}: ${esc(D.name)}</span></h2><div class="divider"></div><p class="n">Warm-up: ${esc(D.warm)}${D.knee?'<br><b>Knee rule:</b> pain ≤3/10, left first. Rising pain or catching ends the exercise.':''}</p><div class="grid">${D.ex.map((e,i)=>{const dn=doneToday(e[0],d),lt=lastTime(e[0]);return `<div class="card ${dn?'done':''}" role="button" tabindex="0" data-i="${i}"><div class="num">${d}${i+1}</div><div><div class="t">${esc(e[0])}</div><div class="n">${esc(e[1])} × ${esc(e[2])}${e[3]?' · '+esc(e[3]):''}</div><div class="last">${lt||'First time: find your working weight.'}</div></div><div class="stamp">LOGGED!</div></div>`}).join('')}</div><p class="n">Block 1 numbers (3 × 10–12 @ RPE 7). Tap a card to log your weight.</p></section>`;
+ const p=Math.min(hours/150,1)*100;
+ h+=`<div class="road"><div class="row" style="display:flex;justify-content:space-between;font-family:'Permanent Marker'"><span style="font:24px Bangers;letter-spacing:1px">ROAD TO BROWN BELT</span><span>${hours}/150 h</span></div><div class="track" style="margin-top:30px"><div class="fill" style="width:${p}%"></div><span class="pin" style="left:50%">4th stripe · 75</span><span class="pin" style="left:96%">Brown test</span></div><div class="sub">${Math.max(0,75-hours)} h to the 4th stripe · ${150-hours} h to the brown belt test</div></div>`;
+ h+=`<div class="foot">${LIVE?'Synced with sheet: '+esc(upd):'Read-only snapshot'+(upd?': '+esc(upd):'')}${pending.length?` · ${pending.length} waiting to sync`:''}</div>`;
+ document.getElementById('app').innerHTML=h}
+function toast(html,ms=8000){const ts=document.getElementById('toast');ts.innerHTML=html;ts.classList.add('s');clearTimeout(undoT);undoT=setTimeout(()=>ts.classList.remove('s'),ms);return ts}
+function open_(i){const d=nextDay(),e=DAYS[d].ex[i];cur={d,e,i};document.getElementById('pt').textContent=`${d}${i+1}. ${e[0]}`;
+ document.getElementById('pn').textContent=`${e[1]} × ${e[2]}`;['pw','pr','pnote'].forEach(k=>document.getElementById(k).value='');document.getElementById('sheet').classList.add('s');setTimeout(()=>document.getElementById('pw').focus(),50)}
+function close_(){document.getElementById('sheet').classList.remove('s')}
+function api(q){return fetch(SCRIPT_URL+'?'+new URLSearchParams(q)).then(r=>r.json()).then(j=>{if(!j.ok)throw j;return j})}
+async function save(){const w=document.getElementById('pw').value.trim();if(!w)return;const{d,e}=cur;
+ const r={date:tday(),session:d,exercise:e[0],sets:String(e[1]),reps:document.getElementById('pr').value.trim()||e[2],weight:w,note:document.getElementById('pnote').value.trim(),status:'logged'};close_();
+ let undo;if(LIVE){rows.push(r);render();try{const j=await api({action:'log',...r});r.row=j.row;undo=()=>{r.status='undone';render();api({action:'undo',row:r.row,exercise:r.exercise}).catch(()=>{r.status='logged';render();toast('UNDO FAILED',1800)})}}catch(x){rows.pop();render();toast('SHEET SAVE FAILED',1800);return}}
+ else{pending.push(r);localStorage.setItem(QK,JSON.stringify(pending));render();undo=()=>{pending=pending.filter(x=>x!==r);localStorage.setItem(QK,JSON.stringify(pending));render()}}
+ navigator.vibrate&&navigator.vibrate([20,40,30]);const ts=toast(`${LIVE?'LOGGED!':'SAVED ON PHONE'} <button id="undo">↶ Undo</button>`);document.getElementById('undo').onclick=ev=>{ev.stopPropagation();ts.classList.remove('s');undo()}}
+document.getElementById('pad').onsubmit=e=>{e.preventDefault();save()};document.getElementById('pc').onclick=close_;
+document.getElementById('sheet').onclick=e=>{if(e.target.id=='sheet')close_()};
+document.addEventListener('click',e=>{const el=e.target.closest('.card[data-i]');if(el)open_(+el.dataset.i)});
+async function flush(){for(const r of [...pending]){try{const j=await api({action:'log',...r});r.row=j.row;rows.push(r);pending=pending.filter(x=>x!==r)}catch(x){break}}localStorage.setItem(QK,JSON.stringify(pending))}
+function take(j){rows=(j.rows||[]).map(r=>({...r,status:r.status||''}));if(j.hours!=null)hours=Math.round(j.hours*10)/10;upd=j.updated||''}
+let gotLive=false;
+fetch('data.json?'+Date.now()).then(r=>r.json()).then(j=>{if(gotLive)return;take(j);render()}).catch(()=>render());
+function live(){if(!SCRIPT_URL)return Promise.reject();return fetch(SCRIPT_URL+'?t='+Date.now()).then(r=>r.json()).then(async j=>{if(!j.rows)throw 0;gotLive=LIVE=true;take(j);upd+=' (live)';await flush();render()})}
+live().catch(()=>{});document.addEventListener('visibilitychange',()=>{if(!document.hidden&&SCRIPT_URL)live().catch(()=>{})});
+</script></body></html>
