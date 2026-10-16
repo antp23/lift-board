@@ -73,7 +73,7 @@ details .grid{margin-top:12px}
  #top .road{background:linear-gradient(135deg,#fbf3e6,#f3e4cf)}
 #top .fill{background:linear-gradient(90deg,#6b3fa0,#7a4a1f 100%);background-size:calc(100% * 150 / var(--pct,1)) 100%;border-right:3px solid var(--ink)}
 #top .track{background:linear-gradient(90deg,#6b3fa047,#7a4a1f47),#fff}
-#top .rtitle{font:22px Bangers;letter-spacing:1px;background:#7a4a1f;color:#fbf3e6;padding:3px 10px 0;border:2.5px solid var(--ink);border-radius:6px;box-shadow:3px 3px 0 var(--ink);transform:rotate(-1.5deg);display:inline-block}
+#top .rtitle{font:22px Bangers;letter-spacing:1px;background:#7a4a1f;color:#fbf3e6;padding:3px 10px 0;border:2.5px solid var(--ink);border-radius:6px;box-shadow:3px 3px 0 var(--ink);transform:rotate(-1.5deg);display:inline-block;white-space:nowrap;margin:2px 0 6px}
 #top .pin.mid::after{border-left:0;width:7px;margin-left:-3.5px;background:#fff;outline:2px solid var(--ink);height:30px}
 #top .pin.end{color:#7a4a1f;font-weight:700}#top .pin.end::after{border-left-color:#7a4a1f;border-left-width:4px}
 .road .pin.end::after{left:auto;right:-3px}
@@ -127,7 +127,7 @@ function render(){const d=viewDay(),sug=nextDay(),D=DAYS[d];const n=D.ex.filter(
 
  h+=`<div class="foot">${LIVE?'Synced with sheet: '+esc(upd):'Read-only snapshot'+(upd?': '+esc(upd):'')}${pending.length?` · ${pending.length} waiting to sync`:''}</div>`;
  const p=Math.min(hours/150,1)*100,f=x=>Math.round(x*10)/10;
- document.getElementById('top').innerHTML=`<div class="road" role="progressbar" aria-label="Road to Brown Belt" aria-valuenow="${hours}" aria-valuemax="150"><div class="row" style="display:flex;justify-content:space-between;align-items:baseline;font-family:'Permanent Marker'"><span class="rtitle">ROAD TO BROWN BELT</span><span style="font-size:13px">${f(hours)} / 150 h · ${hours<75?f(75-hours)+' to 4th stripe':f(150-hours)+' to brown belt'}</span></div><div class="track" style="margin-top:30px"><div class="fill" style="width:${p}%;background-size:${p?10000/p:100}% 100%"></div><span class="pin mid" style="left:50%">4th stripe</span><span class="pin end" style="left:auto;right:0;transform:none">Brown belt</span></div></div>`;
+ document.getElementById('top').innerHTML=`<div class="road" role="progressbar" aria-label="Road to Brown Belt" aria-valuenow="${hours}" aria-valuemax="150"><div class="row" style="display:flex;flex-direction:column;align-items:flex-start;font-family:'Permanent Marker'"><span class="rtitle">ROAD TO BROWN BELT</span><span style="font-size:13px">${f(hours)} / 150 h · ${hours<75?f(75-hours)+' to 4th stripe':f(150-hours)+' to brown belt'}</span></div><div class="track" style="margin-top:30px"><div class="fill" style="width:${p}%;background-size:${p?10000/p:100}% 100%"></div><span class="pin mid" style="left:50%">4th stripe</span><span class="pin end" style="left:auto;right:0;transform:none">Brown belt</span></div></div>`;
  document.getElementById('app').innerHTML=h}
 function toast(html,ms=8000){const ts=document.getElementById('toast');ts.innerHTML=html;ts.classList.add('s');clearTimeout(undoT);undoT=setTimeout(()=>ts.classList.remove('s'),ms);return ts}
 function open_(i){const d=viewDay(),e=DAYS[d].ex[i];cur={d,e,i};document.getElementById('pt').textContent=`${d}${i+1}. ${e[0]}`;
