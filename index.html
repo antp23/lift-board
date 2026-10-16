@@ -68,7 +68,7 @@ details .grid{margin-top:12px}
 .num{flex:0 0 46px;height:46px;border:2.5px solid var(--ink);border-radius:50%;display:grid;place-items:center;font:24px 'Bangers';background:radial-gradient(#0002 1.2px,transparent 1.5px) 0 0/5px 5px}
 .last{font-size:13px;margin-top:6px;font-family:'Permanent Marker'}
 .proto .card{cursor:default;padding:10px 12px}.proto .card::before{display:none}
-.road{margin:40px auto 0;max-width:460px;background:#fff;border:3px solid var(--ink);border-radius:14px;box-shadow:5px 5px 0 var(--ink);padding:12px 14px;transform:rotate(-.6deg)}
+.road{margin:14px auto 0;max-width:460px;background:#fff;border:3px solid var(--ink);border-radius:14px;box-shadow:5px 5px 0 var(--ink);padding:12px 14px;transform:rotate(-.6deg)}
 .road .track{position:relative;overflow:visible}.road .pin{position:absolute;top:-24px;font:13px 'Permanent Marker';transform:translateX(-50%);white-space:nowrap}
 .road .pin::after{content:"";position:absolute;left:50%;top:18px;height:32px;border-left:2.5px dashed var(--ink)}
 .sheet{position:fixed;inset:0;background:#0006;display:none;align-items:flex-end;z-index:20}.sheet.s{display:flex}
@@ -79,7 +79,7 @@ details .grid{margin-top:12px}
 .pad button.go{background:var(--ink);color:#fff}
 .card.done .stamp{opacity:.9;transform:translateY(-50%) rotate(-14deg) scale(1)}
 </style></head><body>
-<header><div class="burst-bg"></div><h1><small>Anthony's</small>LIFT BOARD!</h1>
+<div id="top"></div><header><div class="burst-bg"></div><h1><small>Anthony's</small>LIFT BOARD!</h1>
 <div class="meter" id="meter"><div class="row"><span class="lvl" id="lvl">DAY A</span><span id="sum"></span></div><div class="track"><div class="fill" id="fill"></div></div><div class="sub" id="streak"></div></div></header>
 <main id="app"></main><div class="toast" id="toast" role="status"></div>
 <div class="sheet" id="sheet"><form class="pad" id="pad"><h3 id="pt"></h3><div class="n" id="pn"></div>
@@ -118,8 +118,10 @@ function render(){const d=viewDay(),sug=nextDay(),D=DAYS[d];const n=D.ex.filter(
  let h=`<div class="picker" role="group" aria-label="Pick session day">${[...ORDER].map(x=>`<button type="button" data-day="${x}" class="${x==d?'on':''}" aria-pressed="${x==d}">${x}${x==sug?'<small>suggested</small>':''}</button>`).join('')}</div>`;if(d=='A'||d=='C')h+=`<section class="proto"><h2><span class="tag">⚠ Shoulders first</span><span class="cnt">10 min</span></h2><div class="divider"></div><div class="grid">${PROTO.map(p=>`<div class="card"><div><div class="t">${esc(p[0])}</div><div class="n">${esc(p[1])}</div>${how(p[0])}</div></div>`).join('')}</div></section>`;
  h+=`<section><h2><span class="tag">✸ Day ${d}: ${esc(D.name)}</span></h2><div class="divider"></div><p class="n">Warm-up: ${esc(D.warm)}${D.knee?'<br><b>Knee rule:</b> pain ≤3/10, left first. Rising pain or catching ends the exercise.':''}</p><div class="grid">${D.ex.map((e,i)=>{const dn=doneToday(e[0],d),lt=lastTime(e[0]);return `<div class="card ${dn?'done':''}" role="button" tabindex="0" data-i="${i}"><div class="num">${d}${i+1}</div><div><div class="t">${esc(e[0])}</div><div class="n">${esc(e[1])} × ${esc(e[2])}${e[3]?' · '+esc(e[3]):''}</div><div class="last">${lt||'First time: find your working weight.'}</div>${how(e[0])}</div><div class="stamp">LOGGED!</div></div>`}).join('')}</div><p class="n">Block 1 numbers (3 × 10–12 @ RPE 7). Tap a card to log your weight.</p></section>`;
  const p=Math.min(hours/150,1)*100;
- h+=`<div class="road"><div class="row" style="display:flex;justify-content:space-between;font-family:'Permanent Marker'"><span style="font:24px Bangers;letter-spacing:1px">ROAD TO BROWN BELT</span><span>${hours}/150 h</span></div><div class="track" style="margin-top:30px"><div class="fill" style="width:${p}%"></div><span class="pin" style="left:50%">4th stripe · 75</span><span class="pin" style="left:96%">Brown test</span></div><div class="sub">${Math.max(0,75-hours)} h to the 4th stripe · ${150-hours} h to the brown belt test</div></div>`;
+
  h+=`<div class="foot">${LIVE?'Synced with sheet: '+esc(upd):'Read-only snapshot'+(upd?': '+esc(upd):'')}${pending.length?` · ${pending.length} waiting to sync`:''}</div>`;
+ const p=Math.min(hours/150,1)*100,f=x=>Math.round(x*10)/10;
+ document.getElementById('top').innerHTML=`<div class="road" role="progressbar" aria-label="Road to Brown Belt" aria-valuenow="${hours}" aria-valuemax="150"><div class="row" style="display:flex;justify-content:space-between;align-items:baseline;font-family:'Permanent Marker'"><span style="font:22px Bangers;letter-spacing:1px">ROAD TO BROWN BELT</span><span style="font-size:13px">${f(hours)} / 150 h · ${hours<75?f(75-hours)+' to 4th stripe':f(150-hours)+' to brown belt'}</span></div><div class="track" style="margin-top:30px"><div class="fill" style="width:${p}%"></div><span class="pin" style="left:50%">4th stripe</span><span class="pin" style="left:100%;transform:translateX(-100%)">Brown belt</span></div></div>`;
  document.getElementById('app').innerHTML=h}
 function toast(html,ms=8000){const ts=document.getElementById('toast');ts.innerHTML=html;ts.classList.add('s');clearTimeout(undoT);undoT=setTimeout(()=>ts.classList.remove('s'),ms);return ts}
 function open_(i){const d=viewDay(),e=DAYS[d].ex[i];cur={d,e,i};document.getElementById('pt').textContent=`${d}${i+1}. ${e[0]}`;
